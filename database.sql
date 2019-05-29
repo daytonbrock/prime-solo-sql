@@ -52,3 +52,37 @@ VALUES ('dayton', 'minneapolis', 2, 2, 1000000);
 DELETE FROM "accounts"
 WHERE ("city"='miami' OR "city"='phoenix')
 AND "transactions_completed" < 5;
+
+-- Stretch Questions
+-- 1. Anthony moved to Santa Fe.
+
+UPDATE "accounts" SET "city"='santa fe'
+WHERE "username"='anthony';
+
+-- 2. Grace closed her account.
+
+-- first, find the correct Grace and get her user ID, in case there is more than one.
+SELECT * FROM "accounts"
+WHERE "username"='grace';
+-- then,
+DELETE FROM "accounts"
+WHERE "user_id"='9';
+
+-- 3. Travis made a withdrawl of $20,000. What's their new balance?
+
+UPDATE "accounts" SET "account_balance" = "account_balance" - 20000
+WHERE "user_id"='6' RETURNING "username", "account_balance";
+
+-- 4. The Bank needs to track last names.
+
+-- first, add a column without "not null" constraint
+ALTER TABLE "accounts" ADD COLUMN "last_name" varchar(20);
+
+-- update accounts' last names
+UPDATE "accounts"
+	SET "last_name" = 'mendes'
+	WHERE "user_id" = 1
+
+-- then add constraint to column
+ALTER TABLE "accounts"
+ALTER COLUMN "last_name" SET NOT NULL;
